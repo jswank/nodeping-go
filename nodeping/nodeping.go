@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"strings"
 	"sync"
 
 	"github.com/google/go-querystring/query"
@@ -72,14 +73,15 @@ func addOptions(s string, opt interface{}) (string, error) {
 	return u.String(), nil
 }
 
-// NewClient returns a new Nodeping API client.  If a nil httpClient is
-// provided, http.DefaultClient will be used.  To use API methods which require
-// authentication, provide an http.Client that will perform the authentication
-// for you (such as that provided by the golang.org/x/oauth2 library).
-func NewClient(httpClient *http.Client) *Client {
-	if httpClient == nil {
-		httpClient = http.DefaultClient
+// NewClient returns a new Nodeping API client.
+func NewClient(token string) *Client {
+
+	tp := BasicAuthTransport{
+		Token: strings.TrimSpace(token),
 	}
+
+	httpClient := tp.Client()
+
 	baseURL, _ := url.Parse(defaultBaseURL)
 
 	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent}
