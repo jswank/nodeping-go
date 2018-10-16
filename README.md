@@ -10,35 +10,19 @@ go-nodeping requires Go version 1.4 or greater.
 
 ```go
 import "github.com/jswank/go-nodeping/nodeping"
+
+func main() {
+
+  client := nodeping.NewClient("Nodeping API token")
+
+  // list all checks
+  checks, _, err := client.Checks.List()
+
+}
 ```
 
 Construct a new Nodeping client, then use the various services on the client to
 access different parts of the Nodeping API.
-
-### Authentication ###
-
-The go-nodeping library does not directly handle authentication. Instead, when
-creating a new client, pass an `http.Client` that can handle authentication for
-you. 
-
-```go
-import "golang.org/x/oauth2"
-
-func main() {
-
-  api_token := "your api token"
-
-	tp := nodeping.BasicAuthTransport{
-		Token: strings.TrimSpace(api_token),
-	}
-
-	client := nodeping.NewClient(tp.Client())
-
-  // list all checks
-	checks, _, err := client.Checks.List()
-
-}
-```
 
 ## License ##
 
