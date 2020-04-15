@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/jswank/nodeping-go/nodeping"
 )
@@ -14,11 +13,7 @@ func main() {
 	fmt.Print("Nodeping API Token: ")
 	api_token, _ := r.ReadString('\n')
 
-	tp := nodeping.BasicAuthTransport{
-		Token: strings.TrimSpace(api_token),
-	}
-
-	client := nodeping.NewClient(tp.Client())
+	client := nodeping.NewClient(api_token)
 
 	checks, _, err := client.Checks.List()
 
